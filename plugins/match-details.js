@@ -21,7 +21,6 @@
 
                 HomeTeam.innerHTML = `
                     <div class="STING-WEB-Details-Up" style="display: grid; align-items: center; justify-items: center; padding-bottom: 15px;text-align: center;"> 
-                        <span>${data.analytics.home_team.txt}</span>
                         <span class="STING-WEB-IlI"><img style="width: 40px; height: 40px; border-radius: 50px;" src="${data.analytics.home_team.logo}" alt="${data.analytics.home_team.txt}"></span>
                         <span>${data.analytics.home_team.trainer}</span>
                     </div>
@@ -58,7 +57,6 @@
 
                 AwayTeam.innerHTML = `
                     <div class="STING-WEB-Details-Up" style="display: grid; align-items: center; justify-items: center; padding-bottom: 15px;text-align: center;"> 
-                        <span>${data.analytics.away_team.txt}</span>
                         <span class="STING-WEB-IlI"><img style="width: 40px; height: 40px; border-radius: 50px;" src="${data.analytics.away_team.logo}" alt="${data.analytics.away_team.txt}"></span>
                         <span>${data.analytics.away_team.trainer}</span>
                     </div>
