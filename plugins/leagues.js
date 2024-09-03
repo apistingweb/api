@@ -1,5 +1,5 @@
 /*==============================
-~> Name Temp     : STING WEB - Plugin Leagues
+~> Name Temp     : STING WEB - Leagues API Plugin
 ~> Version	 : 2024 / v2.0 STABLE
 ~> Last Updated  : 05 - 09 - 2024 : 12:00 AM - 03:00 PM
 ~> Dev By     	 : STING WEB  - Facebook Page ->  https://www.facebook.com/stingweb.eg
