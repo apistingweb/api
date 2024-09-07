@@ -1,8 +1,3 @@
-const LiveTxT = "جارية الآن";
-const SoonTxT = "بعد قليل";
-const NotTxT = "لم تبدأ بعد";
-const EndTxT = "إنتهت";
-    
 function displayMatches(matches, containerId) {
     const container = document.getElementById(containerId);
     if (!matches || matches.length === 0) {
@@ -18,7 +13,6 @@ function displayMatches(matches, containerId) {
 function getVisitorTimeZone() {
     return Intl.DateTimeFormat().resolvedOptions().timeZone;
 }
-
 function updateMatchStatus() {
     let matches = document.querySelectorAll(".STING-WEB_Match .STING-WEB_Data");
     let visitorTimeZone = getVisitorTimeZone();
@@ -39,47 +33,45 @@ function updateMatchStatus() {
         if (timeDiff > 20) {
             let startFormatted = startTime.toLocaleTimeString([], options);
             timeElement.textContent = startFormatted;
-            match.innerHTML = 'Not Started'; // You should define NotTxT
+            match.innerHTML = 'لم تبدأ بعد';
             match.classList.add("NOT");
             matchContainer.classList.add("NOT");
         } else if (timeDiff > 0) {
             let startFormatted = startTime.toLocaleTimeString([], options);
             timeElement.textContent = startFormatted;
-            match.innerHTML = 'Soon'; // You should define SoonTxT
+            match.innerHTML = 'بعد قليل';
             match.classList.add("SOON");
             matchContainer.classList.add("SOON");
         } else if (timeDiffEnd > 0) {
             timeElement.style.display = "inline-block";
             let startFormatted = startTime.toLocaleTimeString([], options);
             timeElement.textContent = startFormatted;
-            match.innerHTML = 'Live'; // You should define LiveTxT
+            match.innerHTML = 'جارية الآن';
             match.classList.add("LIVE");
             matchContainer.classList.add("LIVE");
         } else {
             timeElement.style.display = "inline-block";
             let startFormatted = startTime.toLocaleTimeString([], options);
             timeElement.textContent = startFormatted;
-            match.innerHTML = 'Ended'; // You should define EndTxT
+            match.innerHTML = 'إنتهت';
             match.classList.add("END");
             matchContainer.classList.add("END");
         }
     });
 }
-
 console.group(
   "%cSTING WEB - Dashboard Matches API Plugin",
   "font-weight:500;color:#f50;font-size:20px;"
 ),
   console.log("=> Designed by      : STING WEB"),
   console.log("=> FB Page URL      : https://fb.com/stingweb.eg"),
-  console.log("=> Version          : 2024 / 2.0 - STABLE"),
+  console.log("=> Version          : 2024 / 1.0 - STABLE"),
   console.log("=> Desgin URL       : https://www.sting-web.com"),
   console.log(
     "=> %cاطلب نسخة لموقعك الان  - من خلال ستينج ويب",
     "font-weight:600;color:#f50;font-size:15px;font-family:Segoe UI;"
   ),
   console.groupEnd();
-
 function fetchMatchesForElement(element) {
     const npmValue = element.getAttribute('npm');
     if (!npmValue) {
@@ -109,5 +101,4 @@ function fetchMatchesForElement(element) {
             console.error(`Error fetching match data for ${element.id}:`, error);
         });
 }
-
 document.querySelectorAll('[npm]').forEach(fetchMatchesForElement);
