@@ -1,3 +1,5 @@
+const LiveTxT="ar"===document.documentElement.lang?"جارية الآن":"Live Now",SoonTxT="ar"===document.documentElement.lang?"بعد قليل":"Soon",NotTxT="ar"===document.documentElement.lang?"لم تبدأ بعد":"Not Started",EndTxT="ar"===document.documentElement.lang?"إنتهت":"Ended";
+
 function displayMatches(matches, containerId) {
     const container = document.getElementById(containerId);
     if (!matches || matches.length === 0) {
@@ -10,7 +12,6 @@ function displayMatches(matches, containerId) {
     `).join('');
     container.innerHTML = matchHtml;
 }
-const LiveTxT="ar"===document.documentElement.lang?"جارية الآن":"Live Now",SoonTxT="ar"===document.documentElement.lang?"بعد قليل":"Soon",NotTxT="ar"===document.documentElement.lang?"لم تبدأ بعد":"Not Started",EndTxT="ar"===document.documentElement.lang?"إنتهت":"Ended";
 function getVisitorTimeZone() {
     return Intl.DateTimeFormat().resolvedOptions().timeZone;
 }
