@@ -10,6 +10,9 @@ function displayMatches(matches, containerId) {
     `).join('');
     container.innerHTML = matchHtml;
 }
+if (document.querySelector("#STING-WEB-Today-Matches")) {
+    document.querySelector("#STING-WEB-Today-Matches").style.display = "grid";
+}
 function getVisitorTimeZone() {
     return Intl.DateTimeFormat().resolvedOptions().timeZone;
 }
