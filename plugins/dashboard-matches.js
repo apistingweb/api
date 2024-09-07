@@ -1,5 +1,8 @@
-const LiveTxT="ar"===document.documentElement.lang?"جارية الآن":"Live Now",SoonTxT="ar"===document.documentElement.lang?"بعد قليل":"Soon",NotTxT="ar"===document.documentElement.lang?"لم تبدأ بعد":"Not Started",EndTxT="ar"===document.documentElement.lang?"إنتهت":"Ended";
-
+const LiveTxT = "جارية الآن";
+const SoonTxT = "بعد قليل";
+const NotTxT = "لم تبدأ بعد";
+const EndTxT = "إنتهت";
+    
 function displayMatches(matches, containerId) {
     const container = document.getElementById(containerId);
     if (!matches || matches.length === 0) {
