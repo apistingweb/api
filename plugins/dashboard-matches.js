@@ -98,7 +98,7 @@ function fetchMatchesForElement(element) {
                 default:
                     console.warn(`No matching case for container ID: ${containerId}`);
             }
-            updateMatchStatus(); // Call this function after displaying matches
+            updateMatchStatus();
         })
         .catch(error => {
             console.error(`Error fetching match data for ${element.id}:`, error);
