@@ -30,15 +30,8 @@ function fetchMatchesForElement(element) {
                 case 'STING-WEB-Tomorrow-Matches':
                     displayMatches(data.tomorrow || [], containerId);
                     break;
-                default:
-                    console.warn(`No matching case for container ID: ${containerId}`);
-            }
-        })
-        .catch(error => {
-            console.error(`Error fetching match data for ${element.id}:`, error);
-        });
-}
-function getVisitorTimeZone() {
+
+                    function getVisitorTimeZone() {
   return Intl.DateTimeFormat().resolvedOptions().timeZone;
 }
 function updateMatchStatus() {
@@ -88,4 +81,14 @@ function updateMatchStatus() {
   });
 }
 updateMatchStatus();
+
+                    
+                default:
+                    console.warn(`No matching case for container ID: ${containerId}`);
+            }
+        })
+        .catch(error => {
+            console.error(`Error fetching match data for ${element.id}:`, error);
+        });
+}
 document.querySelectorAll('[npm]').forEach(fetchMatchesForElement);
