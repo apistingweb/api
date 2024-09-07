@@ -10,6 +10,58 @@ function displayMatches(matches, containerId) {
     `).join('');
     container.innerHTML = matchHtml;
 }
+
+function getVisitorTimeZone() {
+    return Intl.DateTimeFormat().resolvedOptions().timeZone;
+}
+
+function updateMatchStatus() {
+    let matches = document.querySelectorAll(".STING-WEB_Match .STING-WEB_Data");
+    let visitorTimeZone = getVisitorTimeZone();
+    matches.forEach(function (match) {
+        let startTime = new Date(match.getAttribute("data-start"));
+        let gameEnds = new Date(match.getAttribute("data-gameends"));
+        let currentTime = new Date();
+        let timeDiff = Math.floor((startTime - currentTime) / (1000 * 60));
+        let timeDiffEnd = Math.floor((gameEnds - currentTime) / (1000 * 60));
+        let timeElement = match.parentNode.querySelector("#STING-WEB_Match-Time");
+        let matchContainer = match.closest(".STING-WEB_Match");
+        let options = {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: true,
+            timeZone: visitorTimeZone,
+        };
+        if (timeDiff > 20) {
+            let startFormatted = startTime.toLocaleTimeString([], options);
+            timeElement.textContent = startFormatted;
+            match.innerHTML = 'Not Started'; // You should define NotTxT
+            match.classList.add("NOT");
+            matchContainer.classList.add("NOT");
+        } else if (timeDiff > 0) {
+            let startFormatted = startTime.toLocaleTimeString([], options);
+            timeElement.textContent = startFormatted;
+            match.innerHTML = 'Soon'; // You should define SoonTxT
+            match.classList.add("SOON");
+            matchContainer.classList.add("SOON");
+        } else if (timeDiffEnd > 0) {
+            timeElement.style.display = "inline-block";
+            let startFormatted = startTime.toLocaleTimeString([], options);
+            timeElement.textContent = startFormatted;
+            match.innerHTML = 'Live'; // You should define LiveTxT
+            match.classList.add("LIVE");
+            matchContainer.classList.add("LIVE");
+        } else {
+            timeElement.style.display = "inline-block";
+            let startFormatted = startTime.toLocaleTimeString([], options);
+            timeElement.textContent = startFormatted;
+            match.innerHTML = 'Ended'; // You should define EndTxT
+            match.classList.add("END");
+            matchContainer.classList.add("END");
+        }
+    });
+}
+
 function fetchMatchesForElement(element) {
     const npmValue = element.getAttribute('npm');
     if (!npmValue) {
@@ -30,65 +82,14 @@ function fetchMatchesForElement(element) {
                 case 'STING-WEB-Tomorrow-Matches':
                     displayMatches(data.tomorrow || [], containerId);
                     break;
-
-                    function getVisitorTimeZone() {
-  return Intl.DateTimeFormat().resolvedOptions().timeZone;
-}
-function updateMatchStatus() {
-  let matches = document.querySelectorAll(".STING-WEB_Match .STING-WEB_Data");
-  let visitorTimeZone = getVisitorTimeZone();
-  matches.forEach(function (match) {
-    let startTime = new Date(match.getAttribute("data-start"));
-    let gameEnds = new Date(match.getAttribute("data-gameends"));
-    let currentTime = new Date();
-    let timeDiff = Math.floor((startTime - currentTime) / (1000 * 60));
-    let timeDiffEnd = Math.floor((gameEnds - currentTime) / (1000 * 60));
-    let timeElement = match.parentNode.querySelector("#STING-WEB_Match-Time");
-    let matchContainer = match.closest(".STING-WEB_Match");
-    let options = {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true,
-      timeZone: visitorTimeZone,
-    };
-    if (timeDiff > 20) {
-      let startFormatted = startTime.toLocaleTimeString([], options);
-      timeElement.textContent = startFormatted;
-      match.innerHTML = NotTxT;
-      match.classList.add("NOT");
-      matchContainer.classList.add("NOT");
-    } else if (timeDiff > 0) {
-      let startFormatted = startTime.toLocaleTimeString([], options);
-      timeElement.textContent = startFormatted;
-      match.innerHTML = SoonTxT;
-      match.classList.add("SOON");
-      matchContainer.classList.add("SOON");
-    } else if (timeDiffEnd > 0) {
-      timeElement.style.display = "inline-block";
-      let startFormatted = startTime.toLocaleTimeString([], options);
-      timeElement.textContent = startFormatted;
-      match.innerHTML = LiveTxT;
-      match.classList.add("LIVE");
-      matchContainer.classList.add("LIVE");
-    } else {
-      timeElement.style.display = "inline-block";
-      let startFormatted = startTime.toLocaleTimeString([], options);
-      timeElement.textContent = startFormatted;
-      match.innerHTML = EndTxT;
-      match.classList.add("END");
-      matchContainer.classList.add("END");
-    }
-  });
-}
-updateMatchStatus();
-
-                    
                 default:
                     console.warn(`No matching case for container ID: ${containerId}`);
             }
+            updateMatchStatus(); // Call this function after displaying matches
         })
         .catch(error => {
             console.error(`Error fetching match data for ${element.id}:`, error);
         });
 }
+
 document.querySelectorAll('[npm]').forEach(fetchMatchesForElement);
