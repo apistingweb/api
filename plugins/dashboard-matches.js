@@ -32,11 +32,11 @@ function fetchMatchesForElement(element) {
                     break;
                 default:
                     console.warn(`No matching case for container ID: ${containerId}`);
-                  updateMatchStatus();
             }
         })
         .catch(error => {
             console.error(`Error fetching match data for ${element.id}:`, error);
         });
 }
+updateMatchStatus();
 document.querySelectorAll('[npm]').forEach(fetchMatchesForElement);
