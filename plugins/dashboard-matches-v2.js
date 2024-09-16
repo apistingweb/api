@@ -21,7 +21,7 @@ function startCountdown() {
         const countdownElement = match.querySelector('.STING-WEB-Time-Descending');
         const timeElement = match.querySelector('.STING-WEB-Time');
         const statusElement = match.querySelector('.STING-WEB-Status');
-        const hereElement = match.querySelector('.STING-WEB-Here');
+        const hereElement = match.querySelector('.STING-WEB-Play');
         
         const matchStartTime = countdownElement.getAttribute('data-start');
         const matchEndTime = countdownElement.getAttribute('data-end');
