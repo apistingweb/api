@@ -102,11 +102,6 @@ function lazyLoadImages() {
         observer.observe(img);
     });
 }
-window.onload = function() {
-    lazyLoadImages();
-    startCountdown();
-};
-
 
 console.group(
   "%cSTING WEB - Dashboard Matches API Plugin",
@@ -144,7 +139,10 @@ function fetchMatchesForElement(element) {
                 default:
                     console.warn(`No matching case for container ID: ${containerId}`);
             }
-            updateMatchStatus();
+window.onload = function() {
+    lazyLoadImages();
+    startCountdown();
+};
         })
         .catch(error => {
             console.error(`Error fetching match data for ${element.id}:`, error);
