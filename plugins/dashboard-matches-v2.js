@@ -13,55 +13,101 @@ function displayMatches(matches, containerId) {
 if (document.querySelector("#STING-WEB-Today-Matches")) {
     document.querySelector("#STING-WEB-Today-Matches").style.display = "grid";
 }
-function getVisitorTimeZone() {
-    return Intl.DateTimeFormat().resolvedOptions().timeZone;
-}
-function updateMatchStatus() {
-    let matches = document.querySelectorAll(".STING-WEB_Match .STING-WEB_Data");
-    let visitorTimeZone = getVisitorTimeZone();
-    matches.forEach(function (match) {
-        let startTime = new Date(match.getAttribute("data-start"));
-        let gameEnds = new Date(match.getAttribute("data-gameends"));
-        let currentTime = new Date();
-        let timeDiff = Math.floor((startTime - currentTime) / (1000 * 60));
-        let timeDiffEnd = Math.floor((gameEnds - currentTime) / (1000 * 60));
-        let timeElement = match.parentNode.querySelector("#STING-WEB_Match-Time");
-        let matchContainer = match.closest(".STING-WEB_Match");
-        let options = {
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: true,
-            timeZone: visitorTimeZone,
-        };
-        if (timeDiff > 20) {
-            let startFormatted = startTime.toLocaleTimeString([], options);
-            timeElement.textContent = startFormatted;
-            match.innerHTML = 'لم تبدأ بعد';
-            match.classList.add("NOT");
-            matchContainer.classList.add("NOT");
-        } else if (timeDiff > 0) {
-            let startFormatted = startTime.toLocaleTimeString([], options);
-            timeElement.textContent = startFormatted;
-            match.innerHTML = 'بعد قليل';
-            match.classList.add("SOON");
-            matchContainer.classList.add("SOON");
-        } else if (timeDiffEnd > 0) {
-            timeElement.style.display = "inline-block";
-            let startFormatted = startTime.toLocaleTimeString([], options);
-            timeElement.textContent = startFormatted;
-            match.innerHTML = 'جارية الآن';
-            match.classList.add("LIVE");
-            matchContainer.classList.add("LIVE");
-        } else {
-            timeElement.style.display = "inline-block";
-            let startFormatted = startTime.toLocaleTimeString([], options);
-            timeElement.textContent = startFormatted;
-            match.innerHTML = 'إنتهت';
-            match.classList.add("END");
-            matchContainer.classList.add("END");
-        }
+
+
+function startCountdown() {
+    const matches = document.querySelectorAll(".STING-WEB-Match");
+    matches.forEach((match) => {
+        const countdownElement = match.querySelector('.STING-WEB-Time-Descending');
+        const timeElement = match.querySelector('.STING-WEB-Time');
+        const statusElement = match.querySelector('.STING-WEB-Status');
+        const hereElement = match.querySelector('.STING-WEB-Here');
+        
+        const matchStartTime = countdownElement.getAttribute('data-start');
+        const matchEndTime = countdownElement.getAttribute('data-end');
+        
+        const matchStartDate = new Date(matchStartTime);
+        const matchEndDate = new Date(matchEndTime);
+
+        timeElement.textContent = matchStartDate.toLocaleTimeString('en-EG', {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true
+        });
+    
+        const interval = setInterval(() => {
+            const now = new Date();
+            const timeRemaining = matchStartDate - now;
+            const timeToEnd = matchEndDate - now;
+            
+            if (timeToEnd <= 0) {
+                hereElement.textContent = "المباراة انتهت";
+                statusElement.textContent = "انتهت";
+                clearInterval(interval);
+                match.classList.add("END");
+            }
+            else if (timeRemaining <= 0 && timeToEnd > 0) {
+                hereElement.textContent = "جارية الآن";
+                statusElement.textContent = "جارية الآن";
+                match.classList.add("LIVE");
+            }
+            else if (timeRemaining <= 30 * 60 * 1000) {
+                const minutesRemaining = Math.floor(timeRemaining / (1000 * 60));
+                statusElement.textContent = "بعد قليل";
+                countdownElement.textContent = `${minutesRemaining} دقيقة`;
+                match.classList.add("SOON");
+                hereElement.textContent = "بعد قليل";
+            }
+            else {
+                const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+                const formattedHours = hours.toString().padStart(2, '0');
+                const formattedMinutes = minutes.toString().padStart(2, '0');
+                const formattedSeconds = seconds.toString().padStart(2, '0');
+                hereElement.textContent = "لم تبدأ";
+                countdownElement.textContent = `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+                statusElement.textContent = "لم تبدأ بعد";
+                match.classList.add("NOT");
+            }
+        }, 100);
     });
 }
+function lazyLoadImages() {
+    const images = document.querySelectorAll('.STING-WEB-Right img, .STING-WEB-Left img');
+    const options = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1 
+    };
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                const imgSrc = img.getAttribute('data-img');
+                if (imgSrc) {
+                    img.src = imgSrc;
+                    img.style.opacity = 0; 
+                    img.onload = () => {
+                        img.style.transition = 'opacity 0.5s';
+                        img.style.opacity = 1; 
+                    };
+                    observer.unobserve(img); 
+                }
+            }
+        });
+    }, options);
+
+    images.forEach((img) => {
+        observer.observe(img);
+    });
+}
+window.onload = function() {
+    lazyLoadImages();
+    startCountdown();
+};
+
+
 console.group(
   "%cSTING WEB - Dashboard Matches API Plugin",
   "font-weight:500;color:#f50;font-size:20px;"
