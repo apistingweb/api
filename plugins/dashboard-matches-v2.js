@@ -139,10 +139,10 @@ function fetchMatchesForElement(element) {
                 default:
                     console.warn(`No matching case for container ID: ${containerId}`);
             }
-window.onload = function() {
+
     lazyLoadImages();
     startCountdown();
-};
+            
         })
         .catch(error => {
             console.error(`Error fetching match data for ${element.id}:`, error);
